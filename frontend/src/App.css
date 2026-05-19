@@ -831,6 +831,8 @@ html, body {
   background-color: var(--cream);
   min-height: 100vh;
   box-sizing: border-box;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .auth-container {
@@ -4302,6 +4304,8 @@ html, body {
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
   transition: box-shadow 0.3s ease, transform 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.04);
+  will-change: transform, box-shadow;
+  transform: translateZ(0);
 }
 
 .svc-card:hover {
@@ -4390,6 +4394,9 @@ html, body {
               opacity 0.3s ease;
   opacity: 0;
   padding: 0 2rem;
+  will-change: max-height, opacity, transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .svc-body-open {
