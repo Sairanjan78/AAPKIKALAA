@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send, Loader2, CheckCircle } from 'lucide-react';
 import axios from 'axios';
 
@@ -57,11 +57,11 @@ const ContactUs = () => {
 
           <div className="contact-grid-v3">
             <div className="contact-info-v3">
-              <a href="mailto:hello@kalamandir.art" className="info-card-v3">
+              <a href="mailto:hello@aapkikala.art" className="info-card-v3">
                 <div className="info-icon-v3"><Mail size={24} /></div>
                 <div className="info-content-v3">
                   <h4>Email Us</h4>
-                  <p>hello@kalamandir.art</p>
+                  <p>hello@aapkikala.art</p>
                 </div>
               </a>
               <a href="tel:+917381057877" className="info-card-v3">

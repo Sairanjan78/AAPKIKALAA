@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -24,7 +24,7 @@ const app = express();
 // Middleware
 // Dynamic CORS configuration
 const allowedOrigins = [
-  "https://kalamandir.vercel.app",
+  "https://aapkikala.vercel.app",
   "http://localhost:5173",
   "http://localhost:3000"
 ];
@@ -121,7 +121,7 @@ app.use('/api/messages', messageRoutes);
 app.get('/api/health', (req, res) => {
     res.status(200).json({
         status: 'healthy',
-        message: 'Kalamandir API is running',
+        message: 'AAPKIKALA API is running',
         timestamp: new Date().toISOString()
     });
 });

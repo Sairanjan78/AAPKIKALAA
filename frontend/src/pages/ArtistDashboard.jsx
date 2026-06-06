@@ -88,7 +88,11 @@ const ArtistDashboard = () => {
         try {
             const res = await axios.post('/api/upload', fd, { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } });
             return res.data.data.map(f => ({ url: f.url, altText: '' }));
-        } catch { alert('Media upload failed'); return []; }
+        } catch (err) { 
+            console.error('Upload Error:', err);
+            alert(err.response?.data?.message || err.message || 'Media upload failed'); 
+            return []; 
+        }
         finally { setUploading(false); }
     };
 
@@ -151,7 +155,7 @@ const ArtistDashboard = () => {
                     {isRejected ? (
                         <div style={{ textAlign: 'left', lineHeight: 1.6, marginBottom: '2rem' }}>
                             <p>Dear {user.name},</p>
-                            <p>Thank you for submitting your profile and work to Kalamandir.</p>
+                            <p>Thank you for submitting your profile and work to AAPKIKALA.</p>
                             <p>After careful review, we have decided not to approve your application at this time.</p>
                             <p>We appreciate the effort you put into your submission and wish you success in all your future artistic endeavors.</p>
                             <p style={{ marginTop: '1.5rem', fontWeight: 600 }}>The Kalamandar Team</p>
@@ -207,7 +211,7 @@ const ArtistDashboard = () => {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
                     <div className="profile-avatar-wrapper" onClick={() => document.getElementById('profile-photo-input').click()}>
                         <input id="profile-photo-input" type="file" accept="image/*" style={{ display: 'none' }} onChange={handleProfilePhotoChange} />
-                        {user.profileImage && user.profileImage.startsWith('/') ? (
+                        {user.profileImage ? (
                             <img src={user.profileImage} alt={user.name} className="profile-avatar-img" />
                         ) : (
                             <div className="profile-avatar-fallback">

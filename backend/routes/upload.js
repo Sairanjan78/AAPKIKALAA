@@ -3,18 +3,67 @@ const router = express.Router();
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('../config/cloudinary');
+const path = require('path');
 
 const { auth } = require('../middleware/auth');
 
-// Cloudinary storage config
-const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-        folder: "kalamandir",
-        allowed_formats: ["jpg", "jpeg", "png", "gif", "webp", "mp4", "webm", "mov"],
-        resource_type: "auto" // Support both image and video
-    },
-});
+const fs = require('fs');
+
+// Check if Cloudinary is configured
+const isCloudinaryConfigured = !!(
+    process.env.CLOUDINARY_CLOUD_NAME &&
+    process.env.CLOUDINARY_API_KEY &&
+    process.env.CLOUDINARY_API_SECRET
+);
+
+let storage;
+let profileStorage;
+
+if (isCloudinaryConfigured) {
+    storage = new CloudinaryStorage({
+        cloudinary: cloudinary,
+        params: {
+            folder: "aapkikala",
+            allowed_formats: ["jpg", "jpeg", "png", "gif", "webp", "mp4", "webm", "mov"],
+            resource_type: "auto" // Support both image and video
+        },
+    });
+
+    profileStorage = new CloudinaryStorage({
+        cloudinary: cloudinary,
+        params: {
+            folder: "aapkikala/profiles",
+            allowed_formats: ["jpg", "jpeg", "png", "gif", "webp"],
+            transformation: [{ width: 500, height: 500, crop: "fill" }]
+        },
+    });
+} else {
+    // Ensure local uploads directory exists
+    const uploadsDir = path.resolve(__dirname, '../uploads');
+    if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+
+    storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, uploadsDir);
+        },
+        filename: (req, file, cb) => {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+            cb(null, uniqueSuffix + path.extname(file.originalname));
+        }
+    });
+
+    profileStorage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, uploadsDir);
+        },
+        filename: (req, file, cb) => {
+            const uniqueSuffix = 'profile-' + Date.now() + '-' + Math.round(Math.random() * 1e9);
+            cb(null, uniqueSuffix + path.extname(file.originalname));
+        }
+    });
+}
 
 
 // File filter for images and videos
@@ -42,12 +91,15 @@ router.post('/', auth, upload.array('media', 6), (req, res) => {
             return res.status(400).json({ success: false, message: 'No files uploaded' });
         }
 
-        const files = req.files.map(file => ({
-            url: file.path, // Cloudinary URL
-            originalName: file.originalname,
-            type: file.mimetype.startsWith('video') ? 'video' : 'image',
-            size: file.size
-        }));
+        const files = req.files.map(file => {
+            const url = isCloudinaryConfigured ? file.path : `/uploads/${file.filename}`;
+            return {
+                url: url,
+                originalName: file.originalname,
+                type: file.mimetype.startsWith('video') ? 'video' : 'image',
+                size: file.size
+            };
+        });
 
         res.json({ success: true, data: files });
     } catch (err) {
@@ -58,14 +110,7 @@ router.post('/', auth, upload.array('media', 6), (req, res) => {
 
 // Upload single profile photo (also using Cloudinary)
 const profileUpload = multer({
-    storage: new CloudinaryStorage({
-        cloudinary: cloudinary,
-        params: {
-            folder: "kalamandir/profiles",
-            allowed_formats: ["jpg", "jpeg", "png", "gif", "webp"],
-            transformation: [{ width: 500, height: 500, crop: "fill" }]
-        },
-    }),
+    storage: profileStorage,
     limits: { fileSize: 5 * 1024 * 1024 } // 5MB max for profile photos
 });
 
@@ -75,7 +120,7 @@ router.post('/profile-photo', auth, profileUpload.single('photo'), (req, res) =>
             return res.status(400).json({ success: false, message: 'No file uploaded' });
         }
 
-        const fileUrl = req.file.path; // Cloudinary URL
+        const fileUrl = isCloudinaryConfigured ? req.file.path : `/uploads/${req.file.filename}`;
         res.json({ success: true, data: { url: fileUrl } });
     } catch (err) {
         console.error('Profile photo upload error:', err);

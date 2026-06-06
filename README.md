@@ -1,4 +1,4 @@
-# Kalamandir — Indian Art Marketplace
+﻿# AAPKIKALA — Indian Art Marketplace
 
 A full-stack marketplace platform connecting Indian artisans with art lovers worldwide. Built with React, Node.js, Express, and MongoDB.
 
@@ -39,8 +39,8 @@ A full-stack marketplace platform connecting Indian artisans with art lovers wor
 
 ```bash
 # Clone the repository
-git clone https://github.com/Sairanjan78/Kalamandir.git
-cd Kalamandir
+git clone https://github.com/Sairanjan78/AAPKIKALA.git
+cd AAPKIKALA
 
 # Install backend dependencies
 cd backend
@@ -81,7 +81,7 @@ npm run dev
 ## Project Structure
 
 ```
-Kalamandir/
+AAPKIKALA/
 ├── backend/
 │   ├── config/
 │   ├── controllers/     # Route handlers

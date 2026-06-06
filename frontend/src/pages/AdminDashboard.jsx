@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -165,7 +165,7 @@ const AdminDashboard = () => {
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", `Kalamandir_Report_${new Date().toISOString().split('T')[0]}.csv`);
+        link.setAttribute("download", `AAPKIKALA_Report_${new Date().toISOString().split('T')[0]}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -706,7 +706,7 @@ const AdminDashboard = () => {
                                     <Trash2 size={16} /> Delete
                                 </button>
                                 <a 
-                                    href={`mailto:${msg.email}?subject=Reply from Kalamandir`}
+                                    href={`mailto:${msg.email}?subject=Reply from AAPKIKALA`}
                                     style={{padding: '0.5rem 1rem', border: 'none', borderRadius: '8px', background: 'var(--clay)', color: 'white', cursor: 'pointer', textDecoration: 'none', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.4rem'}}
                                 >
                                     <Mail size={16} /> Reply
@@ -740,7 +740,7 @@ const AdminDashboard = () => {
                         </div>
                         <div>
                             <label style={{display: 'block', fontSize: '0.85rem', fontWeight: '600', color: '#7f8c8d', marginBottom: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.5px'}}>Email Address</label>
-                            <input type="email" defaultValue={user?.email || "admin@kalamandir.com"} style={{width: '100%', boxSizing: 'border-box', padding: '0.9rem 1.2rem', borderRadius: '12px', border: '1px solid #e0e0e0', fontSize: '1rem', background: '#fcfcfc', color: '#2c3e50', transition: 'all 0.3s ease', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)'}} />
+                            <input type="email" defaultValue={user?.email || "admin@aapkikala.com"} style={{width: '100%', boxSizing: 'border-box', padding: '0.9rem 1.2rem', borderRadius: '12px', border: '1px solid #e0e0e0', fontSize: '1rem', background: '#fcfcfc', color: '#2c3e50', transition: 'all 0.3s ease', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)'}} />
                         </div>
                     </div>
                 </div>
