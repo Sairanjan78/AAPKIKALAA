@@ -41,6 +41,19 @@ const Home = () => {
         return () => clearInterval(heroTimer);
     }, []);
 
+    useEffect(() => {
+        if (!loading && window.location.hash) {
+            const id = window.location.hash.replace('#', '');
+            const element = document.getElementById(id);
+            if (element) {
+                const timer = setTimeout(() => {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }, 300);
+                return () => clearTimeout(timer);
+            }
+        }
+    }, [loading]);
+
     const fetchProducts = async () => {
         try {
             const res = await axios.get('/api/products');

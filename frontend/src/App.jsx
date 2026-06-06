@@ -35,9 +35,12 @@ const Navbar = () => {
             const id = location.hash.replace('#', '');
             const element = document.getElementById(id);
             if (element) {
-                setTimeout(() => {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
+                // If it's a home page hash link, let Home.jsx handle it after products load to avoid layout shifts
+                if (location.pathname !== '/' || (id !== 'about' && id !== 'contact')) {
+                    setTimeout(() => {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                }
             }
         } else {
             window.scrollTo(0, 0); // Reset scroll on route change if no hash
