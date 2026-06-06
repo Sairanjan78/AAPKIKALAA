@@ -1,10 +1,10 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { 
     Users, 
-    DollarSign, 
+    IndianRupee, 
     TrendingUp, 
     ShieldCheck, 
     Package,
@@ -294,7 +294,7 @@ const AdminDashboard = () => {
                     </div>
                 </div>
                 <div className="admin-stat-card">
-                    <div className="stat-icon-w revenue"><DollarSign size={24} /></div>
+                    <div className="stat-icon-w revenue"><IndianRupee size={24} /></div>
                     <div className="stat-info-w">
                         <span className="label">Total Revenue</span>
                         <h3>₹{stats.totalRevenue.toLocaleString()}</h3>
