@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, User, LogOut, ShieldCheck, LayoutDashboard, Search, Menu, X } from 'lucide-react';
+import { ShoppingBag, User, LogOut, ShieldCheck, LayoutDashboard, Search, Menu, X, Home as HomeIcon, Palette, Briefcase, Info, Phone, ChevronRight, Globe, Mail, MessageCircle, LogIn } from 'lucide-react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider, useCart } from './context/CartContext';
 import Home from './pages/Home';
@@ -70,30 +70,110 @@ const Navbar = () => {
                 <Link to="/" className="logo">AAPKIKALAA<span>.</span></Link>
 
                 <div className={`nav-links ${isMenuOpen ? 'mobile-open' : ''}`}>
-                    <Link to="/" className="nav-link">Home</Link>
-                    <Link to="/products" className="nav-link">Products</Link>
-                    <Link to="/services" className="nav-link">Services</Link>
+                    {/* Mobile Only Header */}
+                    <div className="mobile-menu-header">
+                        <div className="mobile-logo-wrap">
+                            <span className="mobile-logo-text">AAPKIKALAA<span className="ochre-dot">.</span></span>
+                            <span className="mobile-logo-subtitle">Heritage & Artistry</span>
+                        </div>
+                        <button className="mobile-close-btn" onClick={() => setIsMenuOpen(false)} aria-label="Close menu">
+                            <X size={24} />
+                        </button>
+                    </div>
+
+                    {/* Mobile Profile Card */}
+                    <div className="mobile-menu-profile">
+                        {user ? (
+                            <div className="mobile-profile-card">
+                                <div className="mobile-avatar">
+                                    {user.name ? user.name.charAt(0).toUpperCase() : <User size={18} />}
+                                </div>
+                                <div className="mobile-profile-info">
+                                    <span className="mobile-greeting">Namaste,</span>
+                                    <span className="mobile-username">{user.name || 'Artisan'}</span>
+                                    <span className="mobile-role">{user.role}</span>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="mobile-cta-card">
+                                <span className="mobile-cta-title">Join Our Community</span>
+                                <span className="mobile-cta-text">Discover & support local Indian artisans.</span>
+                                <Link to="/login" className="mobile-cta-btn" onClick={() => setIsMenuOpen(false)}>
+                                    <LogIn size={15} /> Login / Register
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Nav Links */}
+                    <Link to="/" className="nav-link" onClick={() => setIsMenuOpen(false)}>
+                        <HomeIcon size={20} className="nav-link-icon" />
+                        <span>Home</span>
+                        <ChevronRight size={18} className="nav-link-chevron" />
+                    </Link>
+                    <Link to="/products" className="nav-link" onClick={() => setIsMenuOpen(false)}>
+                        <Palette size={20} className="nav-link-icon" />
+                        <span>Products</span>
+                        <ChevronRight size={18} className="nav-link-chevron" />
+                    </Link>
+                    <Link to="/services" className="nav-link" onClick={() => setIsMenuOpen(false)}>
+                        <Briefcase size={20} className="nav-link-icon" />
+                        <span>Services</span>
+                        <ChevronRight size={18} className="nav-link-chevron" />
+                    </Link>
                     <Link to="/#about" className="nav-link" onClick={() => {
+                        setIsMenuOpen(false);
                         if (isHome) {
                             document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
                         }
-                    }}>About Us</Link>
+                    }}>
+                        <Info size={20} className="nav-link-icon" />
+                        <span>About Us</span>
+                        <ChevronRight size={18} className="nav-link-chevron" />
+                    </Link>
                     <Link to="/#contact" className="nav-link" onClick={() => {
+                        setIsMenuOpen(false);
                         if (isHome) {
                             document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                         }
-                    }}>Contact</Link>
-                    <div className="mobile-only-actions">
-                        {user ? (
-                            <>
-                                <Link to={getDashboardLink()} className="nav-link">
-                                    {getDashboardLabel()}
-                                </Link>
-                                <button onClick={logout} className="nav-link logout-text-btn">Logout</button>
-                            </>
-                        ) : (
-                            <Link to="/login" className="nav-link highlight">Login</Link>
-                        )}
+                    }}>
+                        <Phone size={20} className="nav-link-icon" />
+                        <span>Contact</span>
+                        <ChevronRight size={18} className="nav-link-chevron" />
+                    </Link>
+
+                    {/* Mobile Only Dashboard / Logout actions */}
+                    {user && (
+                        <div className="mobile-profile-actions">
+                            <Link to={getDashboardLink()} className="nav-link" onClick={() => setIsMenuOpen(false)}>
+                                {user.role === 'admin' ? <ShieldCheck size={20} className="nav-link-icon" /> :
+                                 user.role === 'artist' ? <LayoutDashboard size={20} className="nav-link-icon" /> :
+                                 <User size={20} className="nav-link-icon" />}
+                                <span>{getDashboardLabel()}</span>
+                                <ChevronRight size={18} className="nav-link-chevron" />
+                            </Link>
+                            <button onClick={() => { logout(); setIsMenuOpen(false); }} className="nav-link logout-text-btn">
+                                <LogOut size={20} className="nav-link-icon" />
+                                <span>Logout</span>
+                                <ChevronRight size={18} className="nav-link-chevron" />
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Mobile Menu Footer */}
+                    <div className="mobile-menu-footer">
+                        <div className="mobile-socials">
+                            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="social-icon" aria-label="Instagram">
+                                <Globe size={20} />
+                            </a>
+                            <a href="mailto:contact@aapkikalaa.com" className="social-icon" aria-label="Mail">
+                                <Mail size={20} />
+                            </a>
+                            <a href="https://facebook.com" target="_blank" rel="noreferrer" className="social-icon" aria-label="Facebook">
+                                <MessageCircle size={20} />
+                            </a>
+                        </div>
+                        <span className="mobile-footer-tagline">Handmade with ♥ in India</span>
                     </div>
                 </div>
 
